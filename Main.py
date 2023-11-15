@@ -1,5 +1,6 @@
 import pygame
 from helpers import *
+from cutters import *
 
 
 # set up the Bomb Diffusion Game
@@ -16,6 +17,7 @@ HEIGHT = 600
 # sets the width and height to
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 # fill the screen with a white color. Possibility is that screen changes color when time is running out
+cutter_instance = Cutters()
 
 
 # Main game loop
@@ -24,6 +26,7 @@ while 1:
         if event.type == pygame.QUIT:
             pygame.quit()
         screen.fill((255, 255, 255))
+
         # Update display
         pygame.display.flip()
 
