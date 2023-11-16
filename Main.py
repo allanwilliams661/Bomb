@@ -5,16 +5,18 @@ from cutter_sprite import *
 def main() -> None:
     # Initialize Pygame
     pygame.init()
+    # Initialize the sound mixer
+    pygame.mixer.init()
 
     # Set up display
     SCREEN_WIDTH, SCREEN_HEIGHT = 800, 600
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-    pygame.display.set_caption("Move Cutter with Arrow Keys")
+    pygame.display.set_caption("Diffuse the Bomb")
 
     # Create a sprite group
     all_sprites: Group = pygame.sprite.Group()
 
-    # Create a cutter instance with an image (provide the path to your image)
+    # Create a cutter instance with an image
     cutters = Cutter(50, 50, 50, 50, image_path="wire_cut.png")
     all_sprites.add(cutters)
 
@@ -30,7 +32,7 @@ def main() -> None:
         keys = pygame.key.get_pressed()
 
         # Move the cutter based on the keys
-        cutters.move(keys)
+        cutters.update(keys)
 
         # Fill the screen with a white color
         screen.fill((255, 255, 255))
