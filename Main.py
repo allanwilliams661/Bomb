@@ -1,18 +1,35 @@
 from cutter_sprite import *
+from wires import *
 def main() -> None:
     # Initialize Pygame
     pygame.init()
     # Initialize the sound mixer
     pygame.mixer.init()
+
+
     # Set up display
     SCREEN_WIDTH, SCREEN_HEIGHT = 800, 600
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     pygame.display.set_caption("Diffuse the Bomb")
     # Create a sprite group
-    all_sprites: Group = pygame.sprite.Group()
+
+    #wire parameters
+
+
+
+    all_sprites = pygame.sprite.Group()
     # Create a cutter instance with an image
     cutters = Cutter(50, 50, 50, 50, image_path="wire_cut.png")
+    wire_instance = Wires(100, 100, 200, 10)
     all_sprites.add(cutters)
+    all_sprites.add(wire_instance)
+
+
+   
+
+
+
+
     # Main game loop
     clock = pygame.time.Clock()
     while True:
