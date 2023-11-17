@@ -13,7 +13,7 @@ def main() -> None:
     pygame.display.set_caption("Diffuse the Bomb")
     # Create a sprite group
 
-    #wire parameters
+
 
 
 
@@ -25,7 +25,7 @@ def main() -> None:
     all_sprites.add(wire_instance)
 
 
-   
+
 
 
 
