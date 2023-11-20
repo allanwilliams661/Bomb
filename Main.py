@@ -11,18 +11,23 @@ def main() -> None:
     SCREEN_WIDTH, SCREEN_HEIGHT = 800, 600
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     pygame.display.set_caption("Diffuse the Bomb")
-    # Create a sprite group
 
 
 
 
-
-    all_sprites = pygame.sprite.Group()
-    # Create a cutter instance with an image
+    # Define sprite Groups.
+    wire_sprites = pygame.sprite.Group()
+    cutter_sprite = pygame.sprite.Group()
+    # Create cutter instance with image
     cutters = Cutter(50, 50, 50, 50, image_path="wire_cut.png")
-    wire_instance = Wires(100, 100, 200, 10)
-    all_sprites.add(cutters)
-    all_sprites.add(wire_instance)
+    # Make wire sprite instances
+    wire_instance1 = Wires(100, 100, 200, 10)
+    wire_instance2 = Wires(100,400,200,10)
+    wire_instance3 = Wires(400,400,200,10)
+    wire_instance4 = Wires(400, 100, 200, 10)
+    cutter_sprite.add(cutters)
+    wire_sprites.add(wire_instance1, wire_instance2,wire_instance3,wire_instance4)
+    wire_list = list(wire_sprites.sprites())
 
 
 
@@ -37,16 +42,26 @@ def main() -> None:
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
-        # Get the keys that are currently pressed
+            elif event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+                # Check for collisions between cutter and wires when space bar is pressed
+                collisions_wire_cutter = pygame.sprite.spritecollide(cutters, wire_sprites, False)
+                for wire in collisions_wire_cutter:
+                    wire.kill()
+
+        # Get the keys that are currently pressed. Could be redundant**
         keys = pygame.key.get_pressed()
-        # Move the cutter based on the keys
+        # Move the cutter based on the arrow keys
         cutters.update(keys)
+        cutters.cut(keys)
         # Fill the screen with a white color
         screen.fill((255, 255, 255))
-        # Draw all sprites in the group
-        all_sprites.draw(screen)
+        # Draw cutter sprite
+        cutter_sprite.draw(screen)
+        # Draw wire sprites
+        wire_sprites.draw(screen)
         # Update the display
         pygame.display.flip()
+
         # Set the frame rate
         clock.tick(30)
 if __name__ == "__main__":

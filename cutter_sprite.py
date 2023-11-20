@@ -13,11 +13,11 @@ class Cutter(pygame.sprite.Sprite):
             self.image = pygame.image.load(image_path)
             self.image = pygame.transform.scale(self.image, (cutter_width, cutter_height))
 
-
+        # Get/Define the rect and pos of cutter sprite
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y
-
+    # Make a method that makes the cutter sprite move
     def update(self, keys: pygame.key.get_pressed) -> None:
         if keys[pygame.K_LEFT] and self.rect.left > 0:
             self.rect.x -= self.speed
@@ -27,6 +27,10 @@ class Cutter(pygame.sprite.Sprite):
             self.rect.y -= self.speed
         if keys[pygame.K_DOWN] and self.rect.bottom < 600:  # Adjust 600 based on your screen height
             self.rect.y += self.speed
+
+
+
+    def cut(self, keys: pygame.key.get_pressed) -> None:
         if keys[
             pygame.K_SPACE] and not self.sound_playing:  # Check if space bar is pressed and sound is not already playing
             self.sound.play()  # Play the sound when space bar is pressed
