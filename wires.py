@@ -11,6 +11,7 @@ class Wires(pygame.sprite.Sprite):
         self.wire_height = wire_height
         self.rect = pygame.Rect(x, y, wire_width, wire_height)
         self.make_color()
+        self.killed = False
         # Define the image path process and sets the starting position of the cutters as the top-left corner
         if self.image_path:
             self.image = pygame.image.load(self.image_path)

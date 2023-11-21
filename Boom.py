@@ -15,4 +15,3 @@ def set_correct_wire():
     elif correct_wire == 4:
         wire_color = 'pink'
     return wire_color
-def Bomb_Go_Off():
