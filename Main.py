@@ -56,25 +56,16 @@ def main() -> None:
                 pygame.quit()
                 sys.exit()
             elif event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
-                # Check for collisions between cutter and wires when space bar is pressed
                 collisions_wire_cutter = pygame.sprite.spritecollide(cutters, wire_sprites, False)
                 for wire in collisions_wire_cutter:
                     wire.kill()
+                    if wire.color != wire_color:  # Check if the wire color is incorrect
+                        bomb_image_path = 'boom_image.png'
+                        image = pygame.image.load(bomb_image_path)
+                        image_rect = image.get_rect()
+                        screen.blit(image, (100,100))
 
 
-
-            for wire_instance in wire_list:
-
-                if wire_instance.killed:  # Check if the wire instance is killed
-                    killed_wire_color = wire_instance.color
-
-                    if killed_wire_color == wire_color:
-                        score += 1
-
-                    else:
-                        score -= 1
-
-                        
 
         # Get the keys that are currently pressed. Could be redundant**
         keys = pygame.key.get_pressed()
