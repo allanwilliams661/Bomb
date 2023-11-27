@@ -1,5 +1,7 @@
 from cutter_sprite import *
 from wires import *
+from timer import *
+
 
 def main() -> None:
     # Initialize Pygame
@@ -7,27 +9,26 @@ def main() -> None:
     # Initialize the sound mixer
     pygame.mixer.init()
 
-
     # Set up display
     SCREEN_WIDTH, SCREEN_HEIGHT = 800, 600
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     pygame.display.set_caption("Diffuse the Bomb")
-
-
-
 
     # Define sprite Groups.
     wire_sprites = pygame.sprite.Group()
     cutter_sprite = pygame.sprite.Group()
     # Create cutter instance with image
     cutters = Cutter(50, 50, 50, 50, image_path="wire_cut.png")
+    timer_sprite = Timer(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 200, 100)
+
     # Make wire sprite instances
     wire_instance1 = Wires(100, 100, 200, 10)
-    wire_instance2 = Wires(100,400,200,10)
-    wire_instance3 = Wires(400,400,200,10)
+    wire_instance2 = Wires(100, 400, 200, 10)
+    wire_instance3 = Wires(400, 400, 200, 10)
     wire_instance4 = Wires(400, 100, 200, 10)
     cutter_sprite.add(cutters)
-    wire_sprites.add(wire_instance1, wire_instance2,wire_instance3,wire_instance4)
+    wire_sprites.add(wire_instance1, wire_instance2, wire_instance3, wire_instance4)
+    wire_sprites.add(timer_sprite)
     wire_list = list(wire_sprites.sprites())
 
     correct_wire = random.randint(1, 4)
@@ -41,12 +42,7 @@ def main() -> None:
     elif correct_wire == 4:
         wire_color = 'pink'
 
-
-
     score = 0
-
-
-
 
     # Main game loop
     clock = pygame.time.Clock()
@@ -56,14 +52,10 @@ def main() -> None:
                 pygame.quit()
                 sys.exit()
             elif event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+                # Check for collisions between cutter and wires when space bar is pressed
                 collisions_wire_cutter = pygame.sprite.spritecollide(cutters, wire_sprites, False)
                 for wire in collisions_wire_cutter:
                     wire.kill()
-                    if wire.color != wire_color:  # Check if the wire color is incorrect
-                        bomb_image_path = 'boom_image.png'
-                        image = pygame.image.load(bomb_image_path)
-                        image_rect = image.get_rect()
-                        screen.blit(image, (100,100))
 
 
 
@@ -78,10 +70,15 @@ def main() -> None:
         cutter_sprite.draw(screen)
         # Draw wire sprites
         wire_sprites.draw(screen)
+
+        timer_sprite.update_timer()
         # Update the display
         pygame.display.flip()
 
+
         # Set the frame rate
         clock.tick(30)
+
+
 if __name__ == "__main__":
     main()
