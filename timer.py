@@ -31,7 +31,7 @@ class Timer(pygame.sprite.Sprite):
             #self.alarm_sound.play()
         if self.seconds < 1000:
             self.font = pygame.font.Font(None, 36)  # Change font to size 36
-            self.image.fill((255, 255, 255))  # Fill the timer background with white
+            self.image.fill((70, 100, 45))  # Fill the timer background with white
             timer_text = self.font.render(str(self.seconds), True, (255, 0, 0))  # Red color for font
             text_rect = timer_text.get_rect(center=(self.width / 2, self.height / 2))
             self.image.blit(timer_text, text_rect)
