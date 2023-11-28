@@ -1,6 +1,7 @@
 from cutter_sprite import *
 from wires import *
 from timer import *
+from Boom import *
 
 
 def main() -> None:
@@ -17,9 +18,17 @@ def main() -> None:
     # Define sprite Groups.
     wire_sprites = pygame.sprite.Group()
     cutter_sprite = pygame.sprite.Group()
+    bomb_sprite = pygame.sprite.Group()
     # Create cutter instance with image
     cutters = Cutter(50, 50, 50, 50, image_path="wire_cut.png")
-    timer_sprite = Timer(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 200, 100)
+    bomb_instance1 = Bomb(100, 50, 50, 50, image_path='tnt_bomb.png')
+    bomb_instance2 = Bomb(100, 150, 50, 50, image_path='tnt_bomb.png')
+    bomb_instance3 = Bomb(100, 250, 50, 50, image_path='tnt_bomb.png')
+    bomb_instance4 = Bomb(100, 350, 50, 50, image_path='tnt_bomb.png')
+    bomb_instance5 = Bomb(100, 450, 50, 50, image_path='tnt_bomb.png')
+    bomb_instance6 = Bomb(100, 550, 50, 50, image_path='tnt_bomb.png')
+
+    timer_sprite = Timer(SCREEN_WIDTH / 2, 50, 53, 50)
 
     # Make wire sprite instances
     wire_instance1 = Wires(100, 100, 200, 10)
@@ -29,6 +38,7 @@ def main() -> None:
     cutter_sprite.add(cutters)
     wire_sprites.add(wire_instance1, wire_instance2, wire_instance3, wire_instance4)
     wire_sprites.add(timer_sprite)
+    bomb_sprite.add(bomb_instance1,bomb_instance2,bomb_instance3,bomb_instance4,bomb_instance5,bomb_instance6)
     wire_list = list(wire_sprites.sprites())
 
     correct_wire = random.randint(1, 4)
@@ -62,16 +72,20 @@ def main() -> None:
         # Get the keys that are currently pressed. Could be redundant**
         keys = pygame.key.get_pressed()
         # Move the cutter based on the arrow keys
+
+        timer_sprite.update_timer()
         cutters.update(keys)
         cutters.cut(keys)
+        bomb_sprite.update()
         # Fill the screen with a white color
         screen.fill((255, 255, 255))
         # Draw cutter sprite
         cutter_sprite.draw(screen)
         # Draw wire sprites
+        bomb_sprite.draw(screen)
         wire_sprites.draw(screen)
 
-        timer_sprite.update_timer()
+
         # Update the display
         pygame.display.flip()
 
