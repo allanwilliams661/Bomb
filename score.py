@@ -18,3 +18,5 @@ class Scoreboard(pygame.sprite.Sprite):
 
     def decrease_score(self):
         self.score -= 1
+    def reset_score(self):
+        self.score = 0

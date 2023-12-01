@@ -4,6 +4,7 @@ import pygame.sprite
 
 from main import *
 from wires import *
+from score import *
 
 class Bomb(pygame.sprite.Sprite):
     def __init__(self, x: int, y: int, bomb_width: int, bomb_height: int, image_path=None) -> None:
@@ -14,6 +15,7 @@ class Bomb(pygame.sprite.Sprite):
         self.speed_x = random.choice([-2, -1, 1, 2])  # Random initial horizontal speed
         self.speed_y = random.choice([-2, -1, 1, 2])  # Random initial vertical speed
 
+
         if image_path:
             self.image = pygame.image.load(image_path)
             self.image = pygame.transform.scale(self.image, (bomb_width, bomb_height))
@@ -23,7 +25,7 @@ class Bomb(pygame.sprite.Sprite):
         self.rect.y = y
 
         self.acceleration = 0.01  # Speed increase rate
-        self.max_speed = 4  # Maximum speed limit
+        self.max_speed = 10  # Maximum speed limit
 
     def update(self):
         self.rect.x += self.speed_x
@@ -44,4 +46,7 @@ class Bomb(pygame.sprite.Sprite):
             self.speed_x *= -1
         if self.rect.top < 0 or self.rect.bottom > 600:
             self.speed_y *= -1
+
+
+
 
