@@ -1,42 +1,33 @@
+import pygame
 import random
 
-import pygame.sprite
-
-from main import *
-from wires import *
-from score import *
-import math
-
-class Bomb(pygame.sprite.Sprite):
-    def __init__(self, x: int, y: int, bomb_width: int, bomb_height: int, image_path=None) -> None:
+class clock_power_up(pygame.sprite.Sprite):
+    def __init__(self, x: int, y: int, clock_width: int, clock_height: int, image_path=None) -> None:
         super().__init__()
         self.original_x = x
         self.original_y = y
-        self.rect = pygame.Rect(x, y, bomb_width, bomb_height)
-
-        # Random initial angle in radians
-        angle = random.uniform(0, 2 * math.pi)
-        # Calculate initial speeds using trigonometry
-        self.speed_x = math.cos(angle) * 2  # Adjust the multiplier (2) for speed
-        self.speed_y = math.sin(angle) * 2
+        self.rect = pygame.Rect(x, y, clock_width, clock_height)
+        self.speed_x = random.choice([-2, -1, 1, 2])  # Random initial horizontal speed from a list of values
+        self.speed_y = random.choice([-2, -1, 1, 2])  # Random initial vertical speed from a list of values
+        self.killed = False
 
 
         if image_path:
             self.image = pygame.image.load(image_path)
-            self.image = pygame.transform.scale(self.image, (bomb_width, bomb_height))
+            self.image = pygame.transform.scale(self.image, (clock_width, clock_height))
 
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y
 
-        self.acceleration = 0.01  # Acceleration
-        self.max_speed = 10  # Maximum speed limit
+        self.acceleration = 0.05  # Acceleration
+        self.max_speed = 15  # Maximum speed limit
 
     def update(self):
         self.rect.x += self.speed_x
         self.rect.y += self.speed_y
 
-        # Randomly change direction
+        # Randomly change direction. Greater upper limit makes the direction change less frequent.
         if random.randint(0, 200) < 2:
             self.speed_x *= -1
         if random.randint(0, 200) < 2:
@@ -51,7 +42,3 @@ class Bomb(pygame.sprite.Sprite):
             self.speed_x *= -1 # changes the speed to opposite so it goes away from the border
         if self.rect.top < 0 or self.rect.bottom > 600:
             self.speed_y *= -1
-
-
-
-

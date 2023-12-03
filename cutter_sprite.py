@@ -8,10 +8,10 @@ class Cutter(pygame.sprite.Sprite):
         self.speed = 5
         self.sound = pygame.mixer.Sound('snip.wav')
         self.sound_playing = False
-        if image_path:
-            # Defines the image path
-            self.image = pygame.image.load(image_path)
-            self.image = pygame.transform.scale(self.image, (cutter_width, cutter_height))
+
+            # Defines the image of the sprite
+        self.image = pygame.image.load(image_path)
+        self.image = pygame.transform.scale(self.image, (cutter_width, cutter_height))
 
         # Get/Define the rect and pos of cutter sprite
         self.rect = self.image.get_rect()
@@ -21,11 +21,11 @@ class Cutter(pygame.sprite.Sprite):
     def update(self, keys: pygame.key.get_pressed) -> None:
         if keys[pygame.K_LEFT] and self.rect.left > 0:
             self.rect.x -= self.speed
-        if keys[pygame.K_RIGHT] and self.rect.right < 800:  # Adjust 800 based on your screen width
+        if keys[pygame.K_RIGHT] and self.rect.right < 800:  # Make it so it cant go off screen
             self.rect.x += self.speed
         if keys[pygame.K_UP] and self.rect.top > 0:
             self.rect.y -= self.speed
-        if keys[pygame.K_DOWN] and self.rect.bottom < 600:  # Adjust 600 based on your screen height
+        if keys[pygame.K_DOWN] and self.rect.bottom < 600:  # Make it so it cant go off screen
             self.rect.y += self.speed
 
 
@@ -37,6 +37,16 @@ class Cutter(pygame.sprite.Sprite):
             self.sound_playing = True  # Set flag to True when sound is playing
         elif not keys[pygame.K_SPACE]:
             self.sound_playing = False
+
+    def weak(self):
+        self.speed = 2
+        self.image_path = 'nail_clip.png'
+        self.image = pygame.image.load(self.image_path)
+        self.image = pygame.transform.scale(self.image, (50, 50))
+    def strong(self):
+        self.speed = 6
+
+
 
 
 

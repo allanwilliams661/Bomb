@@ -10,6 +10,7 @@ class Scoreboard(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.topleft = (x, y)
 
+
     def update_score(self):
         self.image = self.font.render(f"Score: {self.score}", True, (0, 0, 0))
 
