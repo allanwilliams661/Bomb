@@ -45,6 +45,15 @@ class Cutter(pygame.sprite.Sprite):
         self.image = pygame.transform.scale(self.image, (50, 50))
     def strong(self):
         self.speed = 6
+        self.image_path = 'wire_cut.png'
+        self.image = pygame.image.load(self.image_path)
+        self.image = pygame.transform.scale(self.image, (50, 50))
+    def bomb_boom(self):
+
+        self.image_path = 'boom_image.png'
+        self.image = pygame.image.load(self.image_path)
+        self.image = pygame.transform.scale(self.image, (300, 300))
+
 
 
 

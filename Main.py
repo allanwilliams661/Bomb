@@ -6,6 +6,9 @@ from timer import *
 from Boom import *
 from score import *
 from clock_sprite import *
+from Menu import *
+
+
 
 
 def main() -> None:
@@ -33,7 +36,9 @@ def main() -> None:
 
     # Create each instance of the bomb, wire, cutter, timer, and scoreboard sprite.
     scoreboard = Scoreboard(10, 10, score_font)
-    cutters = Cutter(500, 200, 50, 50, image_path='wire_cut.png')
+    cutters1 = Cutter(500, 200, 50, 50, image_path='wire_cut.png')
+
+
     bomb_instance1 = Bomb(100, 50, 50, 50, image_path='tnt_bomb.png')
     bomb_instance2 = Bomb(100, 150, 50, 50, image_path='tnt_bomb.png')
     bomb_instance3 = Bomb(100, 250, 50, 50, image_path='tnt_bomb.png')
@@ -62,7 +67,7 @@ def main() -> None:
 
     # Add each sprite to their sprite group
 
-    cutter_sprite.add(cutters)
+    cutter_sprite.add(cutters1)
 
     wire_sprites.add(wire_instance1, wire_instance2, wire_instance3, wire_instance4, wire_instance5,wire_instance6,wire_instance7,wire_instance8,wire_instance9,wire_instance10)
 
@@ -72,21 +77,22 @@ def main() -> None:
 
     clock_power_up_group.add(clock_power_up_instance)
 
-    wire_list = list(wire_sprites.sprites())
+
 ######################################################################################################################################################################################################
 
 
 
-
+    # Inisialize the number of wires cut.
     wires_cut = 0
 
 
     # Main game loop
 
-    # Set clock ticks
+    # Set clock ticks and frame rate
 
     clock = pygame.time.Clock()
     fr = 30
+    # Make background music
     game_music = pygame.mixer.Sound('Death-Preview.mp3')
     game_music.play()
     while 1:
@@ -103,7 +109,7 @@ def main() -> None:
              # Gets key data to see if you choose to cut a wire
             elif event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
                 # Check for collisions between cutter and wires when space bar is pressed
-                collisions_wire_cutter = pygame.sprite.spritecollide(cutters, wire_sprites, False)
+                collisions_wire_cutter = pygame.sprite.spritecollide(cutters1, wire_sprites, False)
 
 
 
@@ -113,17 +119,55 @@ def main() -> None:
                     wire.kill()
                     scoreboard.increase_score()
                     scoreboard.update_score()
+            # Sets win conditions
+            if wires_cut == 10:
+                bomb_instance1.kill()
+                bomb_instance2.kill()
+                bomb_instance3.kill()
+                bomb_instance4.kill()
+                bomb_instance5.kill()
+                bomb_instance6.kill()
+                font = pygame.font.Font('NovaSquare-Regular.ttf', 36)
+                win_text = font.render("You Win", True, (153, 122, 0))
+                win_text_rect = win_text.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2))
+                screen.blit(win_text, win_text_rect)
+                scoreboard.you_win()
+                pygame.display.flip()
+
+            # Have bomb go off if time gets to 0
+            if timer_sprite.seconds == 0 and wires_cut < 10:
+                boom_sound = pygame.mixer.Sound('boom.wav')
+                boom_sound.play()
+                scoreboard.reset_score()
+                scoreboard.update_score()
+                bomb_instance1.kill()
+                bomb_instance2.kill()
+                bomb_instance3.kill()
+                bomb_instance4.kill()
+                bomb_instance5.kill()
+                bomb_instance6.kill()
+                timer_sprite.reset_time()
+                cutters1.bomb_boom()
+                scoreboard.you_lose()
+
+
+
+
+
 
 
 
 
             # Will look to see if the cutters hit the bomb sprites. If it does then the score will go down. If you go to -3 the bomb exploes hence the noise.
-            if pygame.sprite.spritecollide(cutters, bomb_sprite, False):
+            if pygame.sprite.spritecollide(cutters1, bomb_sprite, False):
                 scoreboard.decrease_score()
                 scoreboard.update_score()
-
+            # Make the cutter sprite weak if you get close to detonating the bomb
             if scoreboard.score <= -1:
-                cutters.weak()
+                cutters1.weak()
+                cutter_sprite.draw(screen)
+            elif scoreboard.score > -1:
+                cutters1.strong()
                 cutter_sprite.draw(screen)
 
 
@@ -133,12 +177,19 @@ def main() -> None:
 
 
 
-
+            # Detonate the bomb if you lose enough lives.
             if scoreboard.score <= -3:
                 boom_sound = pygame.mixer.Sound('boom.wav')
                 boom_sound.play()
-                scoreboard.reset_score()
-                scoreboard.update_score()
+                scoreboard.you_lose()
+                bomb_instance1.kill()
+                bomb_instance2.kill()
+                bomb_instance3.kill()
+                bomb_instance4.kill()
+                bomb_instance5.kill()
+                bomb_instance6.kill()
+                wire_sprites.draw(screen)
+                cutters1.bomb_boom()
 
 
 
@@ -146,15 +197,18 @@ def main() -> None:
 
 
 
-                # Get the keys that are currently pressed. Could be redundant**
+
+
+
+            # Get the keys that are currently pressed and the mouse pos.
             keys = pygame.key.get_pressed()
             mouse_buttons = pygame.mouse.get_pressed()
             mouse_pos = pygame.mouse.get_pos()
-
+            # gives you a power up if you click the power up.
             if mouse_buttons[0] and clock_power_up_instance.rect.collidepoint(mouse_pos):
                 clock_power_up_instance.kill()
                 timer_sprite.seconds += 100
-                cutters.strong()
+                cutters1.strong()
 
 ####################################################################################################################################################################################################
 
@@ -162,17 +216,17 @@ def main() -> None:
 
 
 
-        # Get the keys that are currently pressed. Could be redundant**
+
 
 
         # Constantly updates timer sprite
         timer_sprite.update_timer()
 
         # Updates the cutters x,y pos on the screen
-        cutters.update(keys)
+        cutters1.update(keys)
 
         # Updates the cut function
-        cutters.cut(keys)
+        cutters1.cut(keys)
 
         # Updates the bomb sprites on the screen
         bomb_sprite.update()
@@ -211,4 +265,6 @@ def main() -> None:
 
 
 if __name__ == "__main__":
+    start_screen()
     main()
+

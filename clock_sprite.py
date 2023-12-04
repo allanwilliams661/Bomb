@@ -20,8 +20,8 @@ class clock_power_up(pygame.sprite.Sprite):
         self.rect.x = x
         self.rect.y = y
 
-        self.acceleration = 0.05  # Acceleration
-        self.max_speed = 15  # Maximum speed limit
+        self.acceleration = 0.09  # Acceleration
+        self.max_speed = 18  # Maximum speed limit
 
     def update(self):
         self.rect.x += self.speed_x

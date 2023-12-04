@@ -38,4 +38,7 @@ class Timer(pygame.sprite.Sprite):
             self.update_text()
 
     def power_up(self):
-        self.seconds += 300
+        self.seconds += 300 # Add time for the power up
+    def reset_time(self):
+        self.seconds = 30*60
+

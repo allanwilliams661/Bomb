@@ -21,3 +21,7 @@ class Scoreboard(pygame.sprite.Sprite):
         self.score -= 1
     def reset_score(self):
         self.score = 0
+    def you_win(self):
+        self.image = self.font.render(f"You Win! Final Score: {self.score}", True, (0, 0, 0))
+    def you_lose(self):
+        self.image = self.font.render(f"You Lose! Final Score: {self.score}", True, (0, 0, 0))
